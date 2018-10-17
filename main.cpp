@@ -63,20 +63,24 @@ int main() {
   return 0;
 }
 void GnomeSort(int arr[], int n) {
-  int compareCNT = 0, swapCNT = 0;
-  int i = 1;
-  while (i < n) {
-    if (i == 0 || arr[i - 1] <= arr[i])
-      i++;
-    else {
-      swap(&arr[i], &arr[i - 1]);
-      swapCNT++;
-      i--;
+  int cmpCounter = 0, swapCounter = 0;
+  int index = 0;
+  while (index < n) {
+    if (index == 0) {
+      index++;
+      cmpCounter++;
     }
-    compareCNT += 2;
+    if (arr[index] >= arr[index - 1]) {
+      index++;
+      cmpCounter++;
+    } else {
+      swap(&arr[index], &arr[index - 1]);
+      swapCounter++;
+      index--;
+    }
   }
   std::cout << "Compares\tswaps\n"
-            << compareCNT << "\t\t" << swapCNT << std::endl;
+            << cmpCounter << "\t\t" << swapCounter << std::endl;
 }
 void MergeSort(int arr[], int l, int r) {
   if (l < r) {
