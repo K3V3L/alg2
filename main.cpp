@@ -1,10 +1,11 @@
 #include <iostream>
-void GnomeSort(int arr[], int n);
 void MergeSort(int arr[], int l, int r);
 void Merge(int arr[], int l, int m, int r);
 void generateArr(int *arr, int n, int range, int type);
 void printArr(int arr[], int n);
 void swap(int *x, int *y);
+void stoogesort(int arr[], int l, int h);
+int CompCNT = 0, CopyCNT = 0;
 int main() {
   std::cout << "Enter array size:" << std::endl;
   int n;
@@ -28,7 +29,7 @@ int main() {
   int *arr = new int[n];
   generateArr(arr, n, range, type);
   std::cout << "Choose sort method:\n"
-               "1.Gnome sort\n"
+               "1.Stoogesort\n"
                "2.Merge sort\n";
   int *temp = new int;
   do {
@@ -36,12 +37,12 @@ int main() {
   } while (*temp < 1 || *temp > 2);
   switch (*temp) {
   case 1:
-    std::cout << "\tGnome sort\nInitial array is\n";
+    std::cout << "\tStooge sort\nInitial array is\n";
     printArr(arr, n);
     std::cout << "\nPress any button to sort:";
     std::cin.ignore();
     std::cin.get();
-    GnomeSort(arr, n);
+    stoogesort(arr, 0, n - 1);
     std::cout << "Sorted array:\n";
     printArr(arr, n);
     break;
@@ -58,36 +59,18 @@ int main() {
   default:
     break;
   }
+  std::cout << std::endl << "Compares: " << CompCNT << "\tCopys: " << CopyCNT;
   std::cout << std::endl;
   delete (temp);
   return 0;
 }
-void GnomeSort(int arr[], int n) {
-  int cmpCounter = 0, swapCounter = 0;
-  int index = 0;
-  while (index < n) {
-    if (index == 0) {
-      index++;
-      cmpCounter++;
-    }
-    if (arr[index] >= arr[index - 1]) {
-      index++;
-      cmpCounter++;
-    } else {
-      swap(&arr[index], &arr[index - 1]);
-      swapCounter++;
-      index--;
-    }
-  }
-  std::cout << "Compares\tswaps\n"
-            << cmpCounter << "\t\t" << swapCounter << std::endl;
-}
+
 void MergeSort(int arr[], int l, int r) {
+    CompCNT++;
   if (l < r) {
     int m = l + (r - l) / 2;
     MergeSort(arr, l, m);
     MergeSort(arr, m + 1, r);
-
     Merge(arr, l, m, r);
   }
 }
@@ -105,6 +88,7 @@ void Merge(int arr[], int l, int m, int r) {
   j = 0;
   k = l;
   while (i < n1 && j < n2) {
+    CompCNT+=3;
     if (L[i] <= R[j]) {
       arr[k] = L[i];
       i++;
@@ -115,14 +99,34 @@ void Merge(int arr[], int l, int m, int r) {
     k++;
   }
   while (i < n1) {
+    CompCNT++;
     arr[k] = L[i];
     i++;
     k++;
   }
   while (j < n2) {
+    CompCNT++;
     arr[k] = R[j];
     j++;
     k++;
+  }
+}
+void stoogesort(int arr[], int l, int h) {
+  CompCNT++;
+  if (l >= h) {
+    return;
+  }
+  CompCNT++;
+  if (arr[l] > arr[h]) {
+    swap(&arr[l], &arr[h]);
+    CopyCNT++;
+  }
+  CompCNT++;
+  if (h - l + 1 > 2) {
+    int t = (h - l + 1) / 3;
+    stoogesort(arr, l, h - t);
+    stoogesort(arr, l + t, h);
+    stoogesort(arr, l, h - t);
   }
 }
 void generateArr(int *arr, int n, int range, int type) {
