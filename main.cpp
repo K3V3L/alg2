@@ -5,7 +5,7 @@ void generateArr(int *arr, int n, int range, int type);
 void printArr(int arr[], int n);
 void swap(int *x, int *y);
 void stoogesort(int arr[], int l, int h);
-int CompCNT = 0, CopyCNT = 0;
+static int CompCNT = 0, CopyCNT = 0;
 int main() {
   std::cout << "Enter array size:" << std::endl;
   int n;
