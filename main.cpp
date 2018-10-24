@@ -28,7 +28,7 @@ int main() {
   } while (type < 0 || type > 3);
   int *arr = new int[n];
   generateArr(arr, n, range, type);
-  std::cout << "Choose sort method:\n"
+  std::cout << "\nChoose sort method:\n"
                "1.Stoogesort\n"
                "2.Merge sort\n";
   int *temp = new int;
@@ -67,8 +67,9 @@ int main() {
 
 void MergeSort(int arr[], int l, int r) {
     CompCNT++;
-  if (l < r) {
-    int m = l + (r - l) / 2;
+  if (r <= l)return;
+  {
+    int m = (r + l) / 2;
     MergeSort(arr, l, m);
     MergeSort(arr, m + 1, r);
     Merge(arr, l, m, r);
